@@ -4,7 +4,7 @@ class Behavior():
     def __init__(self, bbcon, sensobs, priority):
         self.bbcon = bbcon #pointer to the controller
         self.sensobs = sensobs # type list containing sensor object
-        self.motor_recommendations = [] # list of recommendations, one per motob
+        self.motor_recommendation = None # list of recommendations, one per motob (tuppels)
         self.priority = priority # a static value indicating importance of this behavior
         self.active_flag = False # If this behavior is active or not
         self.halt_request = None # some behaviors can request the robot to completely halt activity (and thus end the run).
@@ -15,8 +15,8 @@ class Behavior():
         self.active_flag = self.consider_activation()
 
         if self.active_flag:
-            match_degree = self.sense_and_act()
-            self.weight = self.priority * match_degree
+            self.sense_and_act()
+            self.weight = self.priority * self.match_degree
 
     def consider_deactivation(self):
         pass
@@ -27,25 +27,28 @@ class Behavior():
     def sense_and_act(self):
         pass
 
-class move_straight_ahead(Behavior):
+class Move_straight_ahead(Behavior):
 
-    def __init__(self, bbcon, sensobs = [], priority = 1, motor_recoms = []):
+    def __init__(self, bbcon, sensobs = [], priority = 1, motor_recom = ("F", 123)):
         Behavior.__init__(self, bbcon, sensobs, priority)
-        self.motor_recommendations = motor_recoms
+        self.motor_recommendation = motor_recom
         self.active_flag = True
         self.match_degree = 0.01 # super small default behavior
 
+    def consider_activation(self):
+        return True
 
-class avoid_front_collision(Behavior):
+class Avoid_front_collision(Behavior):
 
-    def __init__(self, bbcon, sensobs, priority = 8, motor_recoms = [("left", 90)]): # assume priority in range [1,10]
+    #Sensobs = (front, sider)
+    def __init__(self, bbcon, sensobs, priority = 8): # assume priority in range [1,10]
         Behavior.__init__(self, bbcon, sensobs, priority)
-        self.motor_recommendations = motor_recoms
+
 
     """ anta at ultrasonic er på index 0 og at det kun er dette vi vurderer for denne klassen """
 
     def consider_activation(self):
-        return self.sensobs[0].get_value() < 100 # aktiv når mindr enn en meter
+        return (self.sensobs[0].get_value() < 40 and self.sensobs[0].get_value() > 1) or self.sensobs[1].get_value()[0] or self.sensobs[1].get_value()[1] # aktiv når mindre enn en 40cm
 
     def consider_deactivation(self):
         return not self.consider_activation()
@@ -54,6 +57,40 @@ class avoid_front_collision(Behavior):
         for sensob in self.sensobs:
             sensob.update()
 
-        self.match_degree = 1 - (self.sensobs[0].get_value()/100)
+        if self.sensobs[1].get_value()[1]:
+            print("Objekt detektert paa hoyre side!")
+            self.match_degree = 0.99
+            self.motor_recommendation = ("left", 90)
+
+        elif self.sensobs[1].get_value()[0]:
+            print("Objekt detektert paa venstre side!")
+            self.match_degree = 0.99
+            self.motor_recommendation = ("right", 90)
+
+        else:
+            print("Objekt detektert foran!")
+            self.match_degree = 1 - (self.sensobs[0].get_value()/40)
+            self.motor_recommendation = ("left", 90)
         #=> degree 0 if distance is 100 cm, degree 0.9 if distaince is 10 cm
 
+class Snap_by_line(Behavior):
+
+    def __init__(self, bbcon, sensobs, priority = 6):
+        Behavior.__init__(self, bbcon, sensobs, priority)
+        self.sensob = self.sensobs[0]
+        self.cam = self.sensobs[1]
+        self.count = 1
+
+    def consider_activation(self):
+        return self.sensob.get_value()
+
+    def consider_deactivation(self):
+        return not self.consider_deactivation()
+
+    def sense_and_act(self):
+        self.cam.get_value().dump_image("line_number"+str(self.count)+".jpeg")
+        print("Bilde nummer "+ str(self.count)+ " tatt!")
+        self.count += 1
+
+        self.match_degree = 0.5
+        self.motor_recommendation = ("R", 540)

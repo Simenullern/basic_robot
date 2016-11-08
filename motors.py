@@ -5,8 +5,10 @@ import wiringpi2 as wp
 
 
 class Motors():
+
     def __init__(self):
         self.setup()
+        self.spin_time = 1.90
 
     def setup(self):
         self.max = 1024
@@ -110,3 +112,12 @@ class Motors():
             sleep(duration)
             self.stop()
 
+    def turn_right(self,degree):
+        dur = (degree * self.spin_time) / 360
+        self.right(0.5,dur)
+        print("turning right")
+
+    def turn_left(self,degree):
+        dur = (degree * self.spin_time) / 360
+        self.left(0.5, dur)
+        print("turning left")
