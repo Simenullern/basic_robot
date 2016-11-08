@@ -7,16 +7,13 @@ class Arbitrator():
 
     def choose_action(self):
         # Største vekt vinner
-        winner = None
+        # Vi har bekreftet at det alltid vil være minst ett aktivt behavior
+        winner = self.bbcon.active_behaviors[0]
 
-        for behavior in self.bbcon.active_behaviors:
-            if not winner:
-                winner = behavior
-            elif behavior.weight > winner.weight:
+        for i in range (1, len(self.bbcon.active_behaviors)):
+            behavior = self.bbcon.active_behaviors[i]
+            if behavior.weight > winner.weight:
                 winner = behavior
 
-        if not winner:
-            #winner = Move_straight_ahead(self.bbcon)
-            print ("NO ACTIVE BEHAVIORS!")
 
         return winner
