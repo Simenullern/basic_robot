@@ -2,7 +2,7 @@ from behavior import Move_straight_ahead
 
 class Arbitrator():
 
-    #Dette er en kommentar
+    #Dette er en revoliusjonerede endring
 
     def __init__(self, bbcon):
         self.bbcon = bbcon
