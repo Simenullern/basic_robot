@@ -5,7 +5,7 @@ class Arbitrator():
     def __init__(self, bbcon):
         self.bbcon = bbcon
 
-    #Kommentar av Simen
+    #Kommentar av Simen, denne kommentaren skal bli stående to the end of time
 
     def choose_action(self):
         # Største vekt vinner
