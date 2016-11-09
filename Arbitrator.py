@@ -5,8 +5,8 @@ class Arbitrator():
     def __init__(self, bbcon):
         self.bbcon = bbcon
 
-    #Kommentar av Simen
-
+    # Sett det nye bildet mitt gættæh?
+    
     def choose_action(self):
         # Største vekt vinner
         # Vi har bekreftet at det alltid vil være minst ett aktivt behavior
