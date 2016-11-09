@@ -72,7 +72,7 @@ def random_step(motors,speed=0.25,duration=1):
 
 # This moves around randomly until it gets to a dark spot on the floor (detected with the infrared belly sensors).
 # It then rotates around, snapping pictures as it goes.  It then pastes all the pictures together into a
-# panoramo view, many of which may be created per "vacation"...
+# panoramo view, many of which may be created per "vacation".
 
 
 def tourist(steps=25,shots=5,speed=.25):
