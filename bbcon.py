@@ -15,11 +15,11 @@ from behavior import *
 
 class BBCON():
 
-    def __init__(self,motob,sensobs):
+    def __init__(self,sensobs):
         self.behaviors = []
         self.active_behaviors = []
         self.sensobs = sensobs
-        self.motob = motob
+        self.motob = Motob()
         self.arbitrator = Arbitrator(self)
 
 
@@ -59,8 +59,6 @@ class BBCON():
 def main():
     ZumoButton().wait_for_press()
 
-    motob = Motob()
-
     sensorUS = Ultrasonic()
     sensorIR =  IRProximitySensor()
     sensorReflect = ReflectanceSensors()
@@ -71,7 +69,7 @@ def main():
     sensob2 = Reflect_Sensob(sensorReflect)
     sensob3 = Camera_Sensob(sensorCam)
 
-    bbcon = BBCON(motob,[sensob0, sensob1, sensob2, sensob3])
+    bbcon = BBCON([sensob0, sensob1, sensob2, sensob3])
 
     drive = Move_straight_ahead(bbcon)
     avoid_shit = Avoid_front_collision(bbcon,[sensob0, sensob1])
