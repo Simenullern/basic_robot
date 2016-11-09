@@ -1,3 +1,4 @@
+import random
 
 class Behavior():
 
@@ -7,7 +8,7 @@ class Behavior():
         self.motor_recommendation = None # tuple
         self.priority = priority # a static value indicating importance of this behavior
         self.active_flag = False # If this behavior is active or not
-        self.halt_request = None # some behaviors can request the robot to completely halt activity (and thus end the run).
+        self.halt_request = False # some behaviors can request the robot to completely halt activity (and thus end the run).
         self.match_degree = None  # A real number in the range [0, 1], higher == more weight
         self.weight = None # the product of mathch_degree and priority
 
@@ -78,15 +79,24 @@ class Snap_by_line(Behavior):
         self.count = 1
 
     def consider_activation(self):
-        return self.sensob.get_value()
+        #return self.sensob.get_value()
+        
+        random_tall = random.randint (1,10)
+        if random_tall == 5:
+            return True
 
     def consider_deactivation(self):
         return not self.consider_deactivation()
 
     def sense_and_act(self):
+
         self.cam.get_value().dump_image("line_number"+str(self.count)+".jpeg")
         print("Bilde nummer "+ str(self.count)+ " tatt!")
         self.count += 1
 
         self.match_degree = 0.5
         self.motor_recommendation = ("right", 540)
+
+        if self.count > 3:
+            self.halt_request = True
+            self.motor_recommendation = ("drive", 0)
