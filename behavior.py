@@ -4,7 +4,7 @@ class Behavior():
     def __init__(self, bbcon, sensobs, priority):
         self.bbcon = bbcon #pointer to the controller
         self.sensobs = sensobs # type list containing sensor object
-        self.motor_recommendation = None # list of recommendations, one per motob (tuppels)
+        self.motor_recommendation = None # tuple
         self.priority = priority # a static value indicating importance of this behavior
         self.active_flag = False # If this behavior is active or not
         self.halt_request = None # some behaviors can request the robot to completely halt activity (and thus end the run).
@@ -40,12 +40,9 @@ class Move_straight_ahead(Behavior):
 
 class Avoid_front_collision(Behavior):
 
-    #Sensobs = (front, sider)
+    #Sensobs = [front, sider]
     def __init__(self, bbcon, sensobs, priority = 8): # assume priority in range [1,10]
         Behavior.__init__(self, bbcon, sensobs, priority)
-
-
-    """ anta at ultrasonic er på index 0 og at det kun er dette vi vurderer for denne klassen """
 
     def consider_activation(self):
         return (self.sensobs[0].get_value() < 40 and self.sensobs[0].get_value() > 1) or self.sensobs[1].get_value()[0] or self.sensobs[1].get_value()[1] # aktiv når mindre enn en 40cm
@@ -71,7 +68,6 @@ class Avoid_front_collision(Behavior):
             print("Objekt detektert foran!")
             self.match_degree = 1 - (self.sensobs[0].get_value()/40)
             self.motor_recommendation = ("left", 90)
-        #=> degree 0 if distance is 100 cm, degree 0.9 if distaince is 10 cm
 
 class Snap_by_line(Behavior):
 
@@ -93,4 +89,4 @@ class Snap_by_line(Behavior):
         self.count += 1
 
         self.match_degree = 0.5
-        self.motor_recommendation = ("R", 540)
+        self.motor_recommendation = ("right", 540)

@@ -22,10 +22,6 @@ class BBCON():
         self.motob = Motob()
         self.arbitrator = Arbitrator(self)
 
-
-
-
-
     def add_behavior(self, behavior):
         self.behaviors.append(behavior)
 
@@ -40,7 +36,6 @@ class BBCON():
         if(behavior in self.active_behaviors):
             self.active_behaviors.remove(behavior)
 
-
     def run_one_timestep(self):
         for sensob in self.sensobs:
             sensob.update()
@@ -53,10 +48,9 @@ class BBCON():
         winner = self.arbitrator.choose_action()
         self.motob.update(winner.motor_recommendation)
         print(winner.motor_recommendation)
-        #time.sleep(0.1)
+        #time.sleep(0.1) #consider there is already natural delay in motor turning actions
         for sensob in self.sensobs:
             sensob.reset()
-
 
 def main():
     ZumoButton().wait_for_press()
