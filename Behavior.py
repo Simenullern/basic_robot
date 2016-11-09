@@ -29,7 +29,7 @@ class Behavior():
 
 class Move_straight_ahead(Behavior):
 
-    def __init__(self, bbcon, sensobs = [], priority = 1, motor_recom = ("F", 123)):
+    def __init__(self, bbcon, sensobs = [], priority = 1, motor_recom = ("drive", 0.5)):
         Behavior.__init__(self, bbcon, sensobs, priority)
         self.motor_recommendation = motor_recom
         self.active_flag = True
