@@ -15,15 +15,12 @@ from behavior import *
 
 class BBCON():
 
-    def __init__(self,motob,sensobs):
+    def __init__(self,sensobs):
         self.behaviors = []
         self.active_behaviors = []
         self.sensobs = sensobs
-        self.motobs = motob
+        self.motob = Motob()
         self.arbitrator = Arbitrator(self)
-
-
-
 
     def add_behavior(self, behavior):
         self.behaviors.append(behavior)
@@ -39,7 +36,6 @@ class BBCON():
         if(behavior in self.active_behaviors):
             self.active_behaviors.remove(behavior)
 
-
     def run_one_timestep(self):
         for sensob in self.sensobs:
             sensob.update()
@@ -50,18 +46,14 @@ class BBCON():
             else:
                 self.deactivate_behavior(behavior)
         winner = self.arbitrator.choose_action()
-        for motob in self.motobs:
-            motob.update(winner.motor_recommendation)
-        #time.sleep(0.1)
+        self.motob.update(winner.motor_recommendation)
+        print(winner.motor_recommendation)
+        #time.sleep(0.1) #consider there is already natural delay in motor turning actions
         for sensob in self.sensobs:
             sensob.reset()
 
-
 def main():
     ZumoButton().wait_for_press()
-
-    motob_a = Motob_avoid_front()
-    motob_b = Motob_move_straight_head()
 
     sensorUS = Ultrasonic()
     sensorIR =  IRProximitySensor()
@@ -73,7 +65,7 @@ def main():
     sensob2 = Reflect_Sensob(sensorReflect)
     sensob3 = Camera_Sensob(sensorCam)
 
-    bbcon = BBCON([motob_a,motob_b],[sensob0, sensob1, sensob2, sensob3])
+    bbcon = BBCON([sensob0, sensob1, sensob2, sensob3])
 
     drive = Move_straight_ahead(bbcon)
     avoid_shit = Avoid_front_collision(bbcon,[sensob0, sensob1])
