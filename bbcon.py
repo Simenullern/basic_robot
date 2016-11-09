@@ -19,7 +19,7 @@ class BBCON():
         self.behaviors = []
         self.active_behaviors = []
         self.sensobs = sensobs
-        self.motobs = motob
+        self.motob = motob
         self.arbitrator = Arbitrator(self)
 
 
@@ -50,8 +50,7 @@ class BBCON():
             else:
                 self.deactivate_behavior(behavior)
         winner = self.arbitrator.choose_action()
-        for motob in self.motobs:
-            motob.update(winner.motor_recommendation)
+        self.motob.update(winner.motor_recommendation)
         #time.sleep(0.1)
         for sensob in self.sensobs:
             sensob.reset()
@@ -60,8 +59,7 @@ class BBCON():
 def main():
     ZumoButton().wait_for_press()
 
-    motob_a = Motob_avoid_front()
-    motob_b = Motob_move_straight_head()
+    motob = Motob()
 
     sensorUS = Ultrasonic()
     sensorIR =  IRProximitySensor()
@@ -73,7 +71,7 @@ def main():
     sensob2 = Reflect_Sensob(sensorReflect)
     sensob3 = Camera_Sensob(sensorCam)
 
-    bbcon = BBCON([motob_a,motob_b],[sensob0, sensob1, sensob2, sensob3])
+    bbcon = BBCON(motob,[sensob0, sensob1, sensob2, sensob3])
 
     drive = Move_straight_ahead(bbcon)
     avoid_shit = Avoid_front_collision(bbcon,[sensob0, sensob1])

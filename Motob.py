@@ -10,24 +10,10 @@ class Motob():
         self.operationalize()
 
     def operationalize(self):
-        pass
-
-class Motob_avoid_front(Motob):
-
-    def __init__(self):
-        Motob.__init__(self)
-
-    def operationalize(self):
         if self.value[0] == "left":
             self.motor.turn_left(self.value[1])
         elif self.value[0] == "right":
             self.motor.turn_right(self.value[1])
-
-
-class Motob_move_straight_head(Motob):
-    def __init__(self):
-        Motob.__init__(self)
-
-    def operationalize(self):
         self.motor.forward(0.5)
+
 
