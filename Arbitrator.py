@@ -16,4 +16,4 @@ class Arbitrator():
                 winner = behavior
 
 
-        return winner
+        return winner #dette objektet vant!
