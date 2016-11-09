@@ -34,7 +34,7 @@ class BBCON():
             self.active_behaviors.append(behavior)
 
     def deactivate_behavior(self, behavior):
-        if(behavior in self.active_behaviors):
+        if behavior in self.active_behaviors:
             self.active_behaviors.remove(behavior)
 
     def run_one_timestep(self):
@@ -75,7 +75,7 @@ def main():
 
     bbcon.add_behavior(avoid_shit)
     bbcon.add_behavior(drive)
-    #bbcon.add_behavior(snap_by_line)
+    bbcon.add_behavior(snap_by_line)
 
 
     while not bbcon.halt:
