@@ -51,6 +51,7 @@ class BBCON():
                 self.deactivate_behavior(behavior)
         winner = self.arbitrator.choose_action()
         self.motob.update(winner.motor_recommendation)
+        print(winner.motor_recommendation)
         #time.sleep(0.1)
         for sensob in self.sensobs:
             sensob.reset()
