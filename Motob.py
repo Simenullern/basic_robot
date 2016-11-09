@@ -14,6 +14,6 @@ class Motob():
             self.motor.turn_left(self.value[1])
         elif self.value[0] == "right":
             self.motor.turn_right(self.value[1])
-        self.motor.forward(0.5)
-
-
+        elif self.value[0] == "drive":
+            self.motor.forward(self.value[1]/2)
+    
