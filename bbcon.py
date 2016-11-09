@@ -81,7 +81,7 @@ def main():
     while not bbcon.halt:
         bbcon.run_one_timestep()
 
-#hei
+#hei, jeg har nå github på min stasjonære pc!
 def test():
     sensor = ReflectanceSensors()
 
