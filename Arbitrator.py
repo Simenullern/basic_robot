@@ -2,6 +2,8 @@ from behavior import Move_straight_ahead
 
 class Arbitrator():
 
+    #Dette er en kommentar
+
     def __init__(self, bbcon):
         self.bbcon = bbcon
 
