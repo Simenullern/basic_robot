@@ -46,7 +46,7 @@ class Avoid_front_collision(Behavior):
         Behavior.__init__(self, bbcon, sensobs, priority)
 
     def consider_activation(self):
-        return (self.sensobs[0].get_value() < 40 and self.sensobs[0].get_value() > 1) or self.sensobs[1].get_value()[0] or self.sensobs[1].get_value()[1] # aktiv når mindre enn en 40cm
+        return self.sensobs[0].get_value() < 40 and self.sensobs[0].get_value() > 1 or self.sensobs[1].get_value()[0] or self.sensobs[1].get_value()[1] # aktiv når mindre enn en 40cm
 
     def consider_deactivation(self):
         return not self.consider_activation()
