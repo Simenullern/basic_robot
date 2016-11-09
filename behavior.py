@@ -99,4 +99,5 @@ class Snap_by_line(Behavior):
 
         if self.count > 3:
             self.halt_request = True
+            print ("Task complete. Robot going to sleep.")
             self.motor_recommendation = ("drive", 0)
