@@ -80,9 +80,9 @@ class Snap_by_line(Behavior):
 
     def consider_activation(self):
         #return self.sensob.get_value()
-        
-        random_tall = random.randint (1,10)
-        if random_tall == 5:
+
+        random_tall = random.randint (1,5)
+        if random_tall == 3:
             return True
 
     def consider_deactivation(self):
