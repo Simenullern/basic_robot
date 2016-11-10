@@ -77,13 +77,9 @@ class Snap_by_line(Behavior):
         self.sensob = self.sensobs[0]
         self.cam = self.sensobs[1]
         self.count = 1
-        self.time = 0
 
     def consider_activation(self):
-        if self.time%5 == 0:
-            return self.sensob.get_value()
-        else:
-            return False
+        return self.sensob.get_value()
 
     def consider_deactivation(self):
         return not self.consider_deactivation()
