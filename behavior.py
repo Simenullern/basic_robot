@@ -30,7 +30,7 @@ class Behavior():
 
 class Move_straight_ahead(Behavior):
 
-    def __init__(self, bbcon, sensobs = [], priority = 1, motor_recom = ("drive", 0.5)):
+    def __init__(self, bbcon, sensobs = [], priority = 1, motor_recom = ("drive", 0.3)):
         Behavior.__init__(self, bbcon, sensobs, priority)
         self.motor_recommendation = motor_recom
         self.active_flag = True
@@ -68,26 +68,31 @@ class Avoid_front_collision(Behavior):
         else:
             print("Objekt detektert foran!")
             self.match_degree = 1 - (self.sensobs[0].get_value()/40)
-            self.motor_recommendation = (random.choice["left", "right"],
-                                         random.randint(45, 120))
+            self.motor_recommendation = (random.choice(["left", "right"]),random.randint(80, 100))
 
 class Snap_by_line(Behavior):
 
     def __init__(self, bbcon, sensobs, priority = 6):
         Behavior.__init__(self, bbcon, sensobs, priority)
         self.sensob = self.sensobs[0]
-        self.cam = self.sensobs[1]
+        #self.cam = self.sensobs[1]
         self.count = 1
+        self.time = 0
 
     def consider_activation(self):
-        return self.sensob.get_value()
+        self.time += 1
+        # only fetch sensor data once every 5 timestemp
+        if self.time%5==0:
+            return self.sensob.get_value()
+        else:
+            return False
 
     def consider_deactivation(self):
         return not self.consider_deactivation()
 
     def sense_and_act(self):
 
-        self.cam.get_value().dump_image("line_number"+str(self.count)+".jpeg")
+        #self.cam.get_value().dump_image("line_number"+str(self.count)+".jpeg")
         print("Bilde nummer "+ str(self.count)+ " tatt!")
         self.count += 1
 

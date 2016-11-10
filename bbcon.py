@@ -1,17 +1,12 @@
 from time import sleep
-import random
-import imager2 as IMR
 from reflectance_sensors import ReflectanceSensors
 from camera import Camera
-from motors import Motors
 from motob import *
-from ultrasonic import Ultrasonic
-from irproximity_sensor import  IRProximitySensor
 from zumo_button import ZumoButton
 from arbitrator import Arbitrator
 from sensob import *
-import time
 from behavior import *
+import datetime
 
 class BBCON():
 
@@ -21,7 +16,6 @@ class BBCON():
         self.sensobs = sensobs
         self.motob = Motob()
         self.arbitrator = Arbitrator(self)
-        self.halt = False
 
     def add_behavior(self, behavior):
         self.behaviors.append(behavior)
@@ -38,21 +32,36 @@ class BBCON():
             self.active_behaviors.remove(behavior)
 
     def run_one_timestep(self):
+        a = datetime.datetime.now()
         for sensob in self.sensobs:
             sensob.update()
+        b = datetime.datetime.now()
+        print ("Time to fetch data was: ", b-a)
+
+        c = datetime.datetime.now()
         for behavior in self.behaviors:
             behavior.update()
+            if behavior.halt_request:
+                self.motob.stop()
+                return False
             if behavior.active_flag:
                 self.activate_behavior(behavior)
             else:
                 self.deactivate_behavior(behavior)
         winner = self.arbitrator.choose_action()
-        self.halt = winner.halt_request
         self.motob.update(winner.motor_recommendation)
         print(winner.motor_recommendation)
-        #time.sleep(0.1) #consider there is already natural delay in motor turning actions
+        d = datetime.datetime.now()
+        print("Time to calculate logic was: ", d - c)
+
+        #sleep(0.1) #consider there is already natural delay in motor turning actions
+        e = datetime.datetime.now()
         for sensob in self.sensobs:
             sensob.reset()
+
+        f = datetime.datetime.now()
+        print("Time to reset sensors was: ", f - e)
+        return True
 
 def main():
     ZumoButton().wait_for_press()
@@ -65,28 +74,24 @@ def main():
     sensob0 = US_Sensob(sensorUS)
     sensob1 = IRP_Sensob(sensorIR)
     sensob2 = Reflect_Sensob(sensorReflect)
-    sensob3 = Camera_Sensob(sensorCam)
+    #sensob3 = Camera_Sensob(sensorCam)
 
-    bbcon = BBCON([sensob0, sensob1, sensob2, sensob3])
+    bbcon = BBCON([sensob0, sensob1, sensob2]) #, sensob3
 
     drive = Move_straight_ahead(bbcon)
     avoid_shit = Avoid_front_collision(bbcon,[sensob0, sensob1])
-    snap_by_line = Snap_by_line(bbcon, [sensob2, sensob3])
+    snap_by_line = Snap_by_line(bbcon, [sensob2]) #, sensob3
 
     bbcon.add_behavior(avoid_shit)
     bbcon.add_behavior(drive)
     bbcon.add_behavior(snap_by_line)
 
+    keep_going = True
+    while keep_going:
+        keep_going = bbcon.run_one_timestep()
 
-    while not bbcon.halt:
-        bbcon.run_one_timestep()
-
-#hei, jeg har nå github på min stasjonære pc!
 def test():
     sensor = ReflectanceSensors()
 
     for x in range(30):
         print(sensor.update())
-
-
-
