@@ -81,7 +81,7 @@ class Snap_by_line(Behavior):
         self.time = 0
 
     def consider_activation(self):
-         return self.sensob.get_value()
+         return self.sensob.get_value() or self.priority == 1000  # sikrer at bilde alltid blir tatt.
 
     def consider_deactivation(self):
         return not self.consider_deactivation()
