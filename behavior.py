@@ -75,7 +75,7 @@ class Snap_by_line(Behavior):
     def __init__(self, bbcon, sensobs, priority = 6):
         Behavior.__init__(self, bbcon, sensobs, priority)
         self.sensob = self.sensobs[0]
-        self.cam = self.sensobs[0].cam
+        self.cam = self.sensobs[0]
         self.match_degree = 0.5
         self.count = 1
         self.time = 0
