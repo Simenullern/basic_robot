@@ -60,11 +60,11 @@ class Reflect_snap_Sensob(Sensob):
         self.sensor.update()
         self.value = False
         for value in self.sensor.get_value():
-            if value < 0.1:
+            if value == 0.0:
                 self.value = True
                 break
         #self.value = sum(self.sensor.get_value()) < 1
         #print(self.sensor.get_value())
 
     def snap(self):
-        return IMR.Imager(image=self.cam.get_value())
+        return IMR.Imager(image=self.cam.update())

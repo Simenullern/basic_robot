@@ -30,7 +30,7 @@ class Behavior():
 
 class Move_straight_ahead(Behavior):
 
-    def __init__(self, bbcon, sensobs = [], priority = 1, motor_recom = ("drive", 0.3)):
+    def __init__(self, bbcon, sensobs = [], priority = 1, motor_recom = ("drive", 0.35)):
         Behavior.__init__(self, bbcon, sensobs, priority)
         self.motor_recommendation = motor_recom
         self.active_flag = True
@@ -93,9 +93,9 @@ class Snap_by_line(Behavior):
                 "line_number" + str(self.count) + ".jpeg")
             print("Bilde nummer " + str(self.count) + " tatt!")
             self.count += 1
-            self.motor_recommendation = ("right", 540)
+            self.motor_recommendation = ("right", 480)
             self.priority = 6
-            if self.count > 3:
+            if self.count > 5:
                 self.halt_request = True
                 print("Task complete. Robot going to sleep.")
                 self.motor_recommendation = ("drive", 0)
