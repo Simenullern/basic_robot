@@ -16,6 +16,7 @@ class BBCON():
         self.sensobs = sensobs
         self.motob = Motob()
         self.arbitrator = Arbitrator(self)
+        self.photoflag = False
 
     def add_behavior(self, behavior):
         self.behaviors.append(behavior)
@@ -74,17 +75,19 @@ def main():
     sensob0 = US_Sensob(sensorUS)
     sensob1 = IRP_Sensob(sensorIR)
     sensob2 = Reflect_Sensob(sensorReflect)
-    #sensob3 = Camera_Sensob(sensorCam)
+    sensob3 = Camera_Sensob(sensorCam)
 
     bbcon = BBCON([sensob0, sensob1, sensob2]) #, sensob3
 
     drive = Move_straight_ahead(bbcon)
     avoid_shit = Avoid_front_collision(bbcon,[sensob0, sensob1])
     snap_by_line = Snap_by_line(bbcon, [sensob2]) #, sensob3
+    take_photo = Take_photo(bbcon, [sensob3])
 
     bbcon.add_behavior(avoid_shit)
     bbcon.add_behavior(drive)
     bbcon.add_behavior(snap_by_line)
+    bbcon.add_behavior(take_photo)
 
     keep_going = True
     while keep_going:

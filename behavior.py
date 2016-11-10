@@ -75,28 +75,37 @@ class Snap_by_line(Behavior):
     def __init__(self, bbcon, sensobs, priority = 6):
         Behavior.__init__(self, bbcon, sensobs, priority)
         self.sensob = self.sensobs[0]
-        #self.cam = self.sensobs[1]
-        self.count = 1
-        self.time = 0
 
     def consider_activation(self):
-        self.time += 1
-        # only fetch sensor data once every 5 timestemp
-        if self.time%5==0:
-            return self.sensob.get_value()
-        else:
-            return False
+        return self.sensob.get_value()
 
     def consider_deactivation(self):
         return not self.consider_deactivation()
 
     def sense_and_act(self):
+        self.match_degree = 0.99
+        self.motor_recommendation = ("drive", 0)
+        self.bbcon.photoflag = True
 
-        #self.cam.get_value().dump_image("line_number"+str(self.count)+".jpeg")
-        print("Bilde nummer "+ str(self.count)+ " tatt!")
+class Take_photo(Behavior):
+
+    def __init__(self, bbcon, sensobs, priority = 10):
+        Behavior.__init__(self,bbcon,sensobs,priority)
+        self.count = 1
+
+    def consider_activation(self):
+        return self.bbcon.photoflag
+
+    def consider_deactivation(self):
+        return not self.consider_activation()
+
+    def sense_and_act(self):
+        self.sensobs[0].update()
+        self.sensobs[0].get_value().dump_image("line_number" + str(self.count) + ".jpeg")
+        print("Bilde nummer " + str(self.count) + " tatt!")
         self.count += 1
 
-        self.match_degree = 0.5
+        self.match_degree = 0.99
         self.motor_recommendation = ("right", 540)
 
         if self.count > 3:
