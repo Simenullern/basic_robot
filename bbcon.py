@@ -74,13 +74,13 @@ def main():
     sensob0 = US_Sensob(sensorUS)
     sensob1 = IRP_Sensob(sensorIR)
     sensob2 = Reflect_Sensob(sensorReflect)
-    sensob3 = Camera_Sensob(sensorCam)
+    #sensob3 = Camera_Sensob(sensorCam)
 
-    bbcon = BBCON([sensob0, sensob1, sensob2, sensob3])
+    bbcon = BBCON([sensob0, sensob1, sensob2]) #, sensob3
 
     drive = Move_straight_ahead(bbcon)
     avoid_shit = Avoid_front_collision(bbcon,[sensob0, sensob1])
-    snap_by_line = Snap_by_line(bbcon, [sensob2, sensob3])
+    snap_by_line = Snap_by_line(bbcon, [sensob2]) #, sensob3
 
     bbcon.add_behavior(avoid_shit)
     bbcon.add_behavior(drive)

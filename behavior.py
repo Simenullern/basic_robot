@@ -75,7 +75,7 @@ class Snap_by_line(Behavior):
     def __init__(self, bbcon, sensobs, priority = 6):
         Behavior.__init__(self, bbcon, sensobs, priority)
         self.sensob = self.sensobs[0]
-        self.cam = self.sensobs[1]
+        #self.cam = self.sensobs[1]
         self.count = 1
         self.time = 0
 
@@ -92,7 +92,7 @@ class Snap_by_line(Behavior):
 
     def sense_and_act(self):
 
-        self.cam.get_value().dump_image("line_number"+str(self.count)+".jpeg")
+        #self.cam.get_value().dump_image("line_number"+str(self.count)+".jpeg")
         print("Bilde nummer "+ str(self.count)+ " tatt!")
         self.count += 1
 
