@@ -23,4 +23,6 @@ class Motob():
             self.motor.forward(0.3)
         elif self.value[0] == "drive":
             self.motor.forward(self.value[1])
+        elif self.value[0] == "stop":
+            self.motor.stop()
     

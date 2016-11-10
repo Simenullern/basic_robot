@@ -84,7 +84,7 @@ class Snap_by_line(Behavior):
 
     def sense_and_act(self):
         self.match_degree = 0.99
-        self.motor_recommendation = ("drive", 0)
+        self.motor_recommendation = ("stop", 1)
         self.bbcon.photoflag = True
 
 class Take_photo(Behavior):
@@ -107,6 +107,7 @@ class Take_photo(Behavior):
 
         self.match_degree = 0.99
         self.motor_recommendation = ("right", 540)
+        self.bbcon.photoflag = False
 
         if self.count > 3:
             self.halt_request = True
