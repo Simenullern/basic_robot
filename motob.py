@@ -9,6 +9,9 @@ class Motob():
         self.value = motor_recom
         self.operationalize()
 
+    def stop(self):
+        self.motor.stop()
+
     def operationalize(self):
         if self.value[0] == "left":
             self.motor.stop()

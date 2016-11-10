@@ -15,7 +15,6 @@ class BBCON():
         self.sensobs = sensobs
         self.motob = Motob()
         self.arbitrator = Arbitrator(self)
-        self.halt = False
 
     def add_behavior(self, behavior):
         self.behaviors.append(behavior)
@@ -41,7 +40,9 @@ class BBCON():
             else:
                 self.deactivate_behavior(behavior)
         winner = self.arbitrator.choose_action()
-        self.halt = winner.halt_request
+        if winner.halt_request:
+            self.motob.stop()
+            return
         self.motob.update(winner.motor_recommendation)
         print(winner.motor_recommendation)
         #sleep(0.1) #consider there is already natural delay in motor turning actions
@@ -72,7 +73,7 @@ def main():
     bbcon.add_behavior(snap_by_line)
 
 
-    while not bbcon.halt:
+    while True:
         bbcon.run_one_timestep()
 
 def test():
