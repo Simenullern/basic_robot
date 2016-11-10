@@ -52,7 +52,7 @@ class Reflect_Sensob(Sensob):
     def update(self):
         self.sensor.update()
         self.value = sum(self.sensor.get_value()) < 1
-        print(self.sensor.get_value())
+        #print(self.sensor.get_value())
 
 class Camera_Sensob(Sensob):
 
