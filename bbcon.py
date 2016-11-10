@@ -44,7 +44,7 @@ class BBCON():
         self.halt = winner.halt_request
         self.motob.update(winner.motor_recommendation)
         print(winner.motor_recommendation)
-        time.sleep(0.1) #consider there is already natural delay in motor turning actions
+        sleep(0.1) #consider there is already natural delay in motor turning actions
         for sensob in self.sensobs:
             sensob.reset()
 
