@@ -32,13 +32,13 @@ class BBCON():
             self.active_behaviors.remove(behavior)
 
     def run_one_timestep(self):
-        a = datetime.datetime.now().replace(microsecond=0)
+        a = datetime.datetime.now()
         for sensob in self.sensobs:
             sensob.update()
-        b = datetime.datetime.now().replace(microsecond=0)
-        print ("Time to fetch data in millisecons was: ", b-a)
+        b = datetime.datetime.now()
+        print ("Time to fetch data was: ", b-a)
 
-        c = datetime.datetime.now().replace(microsecond=0)
+        c = datetime.datetime.now()
         for behavior in self.behaviors:
             behavior.update()
             if behavior.halt_request:
@@ -51,16 +51,16 @@ class BBCON():
         winner = self.arbitrator.choose_action()
         self.motob.update(winner.motor_recommendation)
         print(winner.motor_recommendation)
-        d = datetime.datetime.now().replace(microsecond=0)
-        print("Time to calculate logic in millisecons was: ", d - c)
+        d = datetime.datetime.now()
+        print("Time to calculate logic was: ", d - c)
 
         #sleep(0.1) #consider there is already natural delay in motor turning actions
-        e = datetime.datetime.now().replace(microsecond=0)
+        e = datetime.datetime.now()
         for sensob in self.sensobs:
             sensob.reset()
 
-        f = datetime.datetime.now().replace(microsecond=0)
-        print("Time to reset sensors in millisecons was: ", f - e)
+        f = datetime.datetime.now()
+        print("Time to reset sensors was: ", f - e)
         return True
 
 def main():
