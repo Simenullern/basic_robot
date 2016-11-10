@@ -35,7 +35,7 @@ class BBCON():
             sensob.update()
         for behavior in self.behaviors:
             behavior.update()
-            if behavior.halt_request():
+            if behavior.halt_request:
                 self.motob.stop()
                 return
             if behavior.active_flag:
