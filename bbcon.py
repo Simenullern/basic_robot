@@ -37,7 +37,7 @@ class BBCON():
             behavior.update()
             if behavior.halt_request:
                 self.motob.stop()
-                return
+                return False
             if behavior.active_flag:
                 self.activate_behavior(behavior)
             else:
@@ -48,6 +48,8 @@ class BBCON():
         #sleep(0.1) #consider there is already natural delay in motor turning actions
         for sensob in self.sensobs:
             sensob.reset()
+
+        return True
 
 def main():
     ZumoButton().wait_for_press()
@@ -72,9 +74,9 @@ def main():
     bbcon.add_behavior(drive)
     bbcon.add_behavior(snap_by_line)
 
-
-    while True:
-        bbcon.run_one_timestep()
+    keep_going = True
+    while keep_going:
+        keep_going = bbcon.run_one_timestep()
 
 def test():
     sensor = ReflectanceSensors()
