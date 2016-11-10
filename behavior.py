@@ -75,31 +75,31 @@ class Snap_by_line(Behavior):
     def __init__(self, bbcon, sensobs, priority = 6):
         Behavior.__init__(self, bbcon, sensobs, priority)
         self.sensob = self.sensobs[0]
-        #self.cam = self.sensobs[1]
+        self.cam = self.sensobs[0]
+        self.match_degree = 0.5
         self.count = 1
         self.time = 0
 
     def consider_activation(self):
-        self.time += 1
-        # only fetch sensor data once every 5 timestemp
-        if self.time%5==0:
-            return self.sensob.get_value()
-        else:
-            return False
+         return self.sensob.get_value()
 
     def consider_deactivation(self):
         return not self.consider_deactivation()
 
     def sense_and_act(self):
 
-        #self.cam.get_value().dump_image("line_number"+str(self.count)+".jpeg")
-        print("Bilde nummer "+ str(self.count)+ " tatt!")
-        self.count += 1
-
-        self.match_degree = 0.5
-        self.motor_recommendation = ("right", 540)
-
-        if self.count > 3:
-            self.halt_request = True
-            print ("Task complete. Robot going to sleep.")
+        if self.priority == 1000: # time to take a photo :)
+            self.cam.snap().dump_image(
+                "line_number" + str(self.count) + ".jpeg")
+            print("Bilde nummer " + str(self.count) + " tatt!")
+            self.count += 1
+            self.motor_recommendation = ("right", 540)
+            self.priority = 6
+            if self.count > 3:
+                self.halt_request = True
+                print("Task complete. Robot going to sleep.")
+                self.motor_recommendation = ("drive", 0)
+        else:
+            self.priority = 1000
             self.motor_recommendation = ("drive", 0)
+            print ("Take pic next timestamp while standing still")

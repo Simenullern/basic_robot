@@ -1,5 +1,6 @@
 from ultrasonic import Ultrasonic
 from irproximity_sensor import IRProximitySensor
+from camera import Camera
 import imager2 as IMR
 
 # 1. reflectens (returnerer liste av 6 tall mellom 0 og 1)
@@ -48,22 +49,17 @@ class IRP_Sensob(US_Sensob):
         self.value = self.sensor.get_value()
 
 
-class Reflect_Sensob(Sensob):
+class Reflect_snap_Sensob(Sensob):
 
     def __init__(self, sensor):
         Sensob.__init__(self, sensor)
-
+        self.cam = Camera()
 
     def update(self):
+        # only update sensors underneath!
         self.sensor.update()
         self.value = sum(self.sensor.get_value()) < 1
         #print(self.sensor.get_value())
 
-class Camera_Sensob(Sensob):
-
-    def __init__(self,sensor):
-        Sensob.__init__(self, sensor)
-
-    def update(self):
-        self.sensor.update()
-        self.value = IMR.Imager(image=self.sensor.get_value())
+    def snap(self):
+        return IMR.Imager(image=self.cam.get_value())
