@@ -77,9 +77,15 @@ class Snap_by_line(Behavior):
         self.sensob = self.sensobs[0]
         self.cam = self.sensobs[1]
         self.count = 1
+        self.time = 0
 
     def consider_activation(self):
-        return self.sensob.get_value()
+        self.time += 1
+        # only fetch sensor data once every 5 timestemp
+        if self.time%5==0:
+            return self.sensob.get_value()
+        else:
+            return False
 
     def consider_deactivation(self):
         return not self.consider_deactivation()
