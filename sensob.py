@@ -34,6 +34,7 @@ class US_Sensob(Sensob):
     def update(self):
         self.sensor.update()
         self.value = self.sensor.get_value()
+        print(self.value)
 
 
 # IRP_Sensob.value er en tuppel på form (boolean,boolean) indeks1 er høyre og indeks0 er venstre
@@ -41,6 +42,10 @@ class IRP_Sensob(US_Sensob):
 
     def __init__(self, sensor):
         US_Sensob.__init__(self, sensor)
+
+    def update(self):
+        self.sensor.update()
+        self.value = self.sensor.get_value()
 
 
 class Reflect_Sensob(Sensob):
