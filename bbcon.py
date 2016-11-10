@@ -21,6 +21,7 @@ class BBCON():
         self.sensobs = sensobs
         self.motob = Motob()
         self.arbitrator = Arbitrator(self)
+        self.halt = False
 
     def add_behavior(self, behavior):
         self.behaviors.append(behavior)
@@ -33,7 +34,7 @@ class BBCON():
             self.active_behaviors.append(behavior)
 
     def deactivate_behavior(self, behavior):
-        if(behavior in self.active_behaviors):
+        if behavior in self.active_behaviors:
             self.active_behaviors.remove(behavior)
 
     def run_one_timestep(self):
@@ -46,6 +47,7 @@ class BBCON():
             else:
                 self.deactivate_behavior(behavior)
         winner = self.arbitrator.choose_action()
+        self.halt = winner.halt_request
         self.motob.update(winner.motor_recommendation)
         print(winner.motor_recommendation)
         #time.sleep(0.1) #consider there is already natural delay in motor turning actions
@@ -73,16 +75,18 @@ def main():
 
     bbcon.add_behavior(avoid_shit)
     bbcon.add_behavior(drive)
-    #bbcon.add_behavior(snap_by_line)
+    bbcon.add_behavior(snap_by_line)
 
 
-    for x in range(15):
+    while not bbcon.halt:
         bbcon.run_one_timestep()
-    Motors().stop()
 
+#hei, jeg har nå github på min stasjonære pc!
 def test():
     sensor = ReflectanceSensors()
 
     for x in range(30):
         print(sensor.update())
+
+
 
