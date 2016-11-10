@@ -35,14 +35,14 @@ class BBCON():
             sensob.update()
         for behavior in self.behaviors:
             behavior.update()
+            if behavior.halt_request():
+                self.motob.stop()
+                return
             if behavior.active_flag:
                 self.activate_behavior(behavior)
             else:
                 self.deactivate_behavior(behavior)
         winner = self.arbitrator.choose_action()
-        if winner.halt_request:
-            self.motob.stop()
-            return
         self.motob.update(winner.motor_recommendation)
         print(winner.motor_recommendation)
         #sleep(0.1) #consider there is already natural delay in motor turning actions
