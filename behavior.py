@@ -68,7 +68,7 @@ class Avoid_front_collision(Behavior):
         else:
             print("Objekt detektert foran!")
             self.match_degree = 1 - (self.sensobs[0].get_value()/40)
-            self.motor_recommendation = (random.choice(["left", "right"]),random.randint(45, 120))
+            self.motor_recommendation = (random.choice(["left", "right"]),random.randint(80, 100))
 
 class Snap_by_line(Behavior):
 
