@@ -11,9 +11,11 @@ class Motob():
 
     def operationalize(self):
         if self.value[0] == "left":
+            self.motor.stop()
             self.motor.turn_left(self.value[1])
             self.motor.forward(0.5)
         elif self.value[0] == "right":
+            self.motor.stop()
             self.motor.turn_right(self.value[1])
             self.motor.forward(0.5)
         elif self.value[0] == "drive":
